@@ -11,7 +11,7 @@
  *
  * @author Luiis Plata
  */
-class Usuarios extends CI_Model {
+class Usuarios_model extends CI_Model {
 
     //put your code here
     public function __construct() {
@@ -20,21 +20,34 @@ class Usuarios extends CI_Model {
     }
 
     public function principalId($llave) {
-        //$resultado = $this->db->query("CALL llave ('{$llave}')");
+        $llaveResult = "";
+        $this->db->trans_begin();
         $resultado = $this->db->query("select llave from usuarios where llave like '$llave'");
-        //print_r($resultado);
         if ($resultado->num_rows() > 0) {
             //hay datos
-            foreach ($resultado->result() as $value) {
-                return $value->llave;
-            }
+            $resultRow = $resultado->row();
+            $llaveResult = $resultRow->llave;
         } else {
+            $this->db->trans_rollback();
             return FALSE;
         }
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+        } else {
+            $this->db->trans_commit();
+            return $llaveResult;
+        }
+
+
+
+
+        //$resultado = $this->db->query("CALL llave ('{$llave}')");
+        //print_r($resultado);
     }
 
     public function login($usuario, $pass) {
-        //$resultado = $this->db->query("call login ('$usuario','$pass')");   
+        $llave = "";
+        $this->db->trans_begin();
         $sql = "select * from usuarios where user like '$usuario' and pass like '$pass'";
         $resultado = $this->db->query($sql);
         if ($resultado->num_rows() > 0) {
@@ -46,11 +59,21 @@ class Usuarios extends CI_Model {
                 //llamamos de nuevo el selet para mandar la llave actualizada
                 $query = $this->db->query($sql);
                 $fila = $query->row();
-                return $fila->llave;
+                $llave = $fila->llave;
+                $this->db->trans_commit();
+                return $llave;
             }
         } else {
             //no tiene login
+            $this->db->trans_rollback();
             return FALSE;
+        }
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return FALSE;
+        } else {
+            $this->db->trans_commit();
+            return $llave;
         }
     }
 

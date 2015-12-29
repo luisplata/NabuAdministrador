@@ -3,6 +3,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Welcome extends CI_Controller {
 
+    public function __construct() {
+        parent::__construct();
+        header('Access-Control-Allow-Origin: *');
+    }
 	/**
 	 * Index Page for this controller.
 	 *
@@ -24,7 +28,7 @@ class Welcome extends CI_Controller {
 		$datos["negro"] = "Hola negro! :D";
 		$datos["pery"]="hola pery";
 		$datos["saludo"] = $this->Modelo->busqueda($nombre);
-		$this->load->view('welcome_message',$datos);
+		echo json_encode($datos);
 	}
 	public function ajax(){
 		$this->load->model("Modelo");

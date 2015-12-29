@@ -15,18 +15,22 @@ if (!defined('BASEPATH'))
  * @author Luiis Plata
  */
 class Validaciones {
-    /*Libreria que permitira hacer validaciones con la base de datos para ver si puede o no acceder*/
+    /* Libreria que permitira hacer validaciones con la base de datos para ver si puede o no acceder */
+
     private $CI = null;
-    public function __construct() {        
-        $this->CI =& get_instance();
-        $this->CI->load->model("Usuarios","usuario");
+
+    public function __construct() {
+        $this->CI = & get_instance();
+        $this->CI->load->model("Usuarios_model", "usuario");
     }
-    public function validarLlave($llave){
-        $resultado = $this->CI->usuario->principalId($llave);        
-        if($resultado){
+
+    public function validarLlave($llave) {
+        $resultado = $this->CI->usuario->principalId($llave);
+        if ($resultado) {
             return $resultado;
-        }else{
+        } else {
             return FALSE;
         }
     }
+
 }

@@ -17,10 +17,12 @@ require APPPATH . '/interfaces/NabuControlador.php';
 class Login extends REST_Controller implements NabuControlador {
 
     //put your code here
-    public function __construct() {
-        parent::__construct();
-        $this->load->library("validaciones");
-        $this->load->model("usuarios", "usuarios");
+
+    public function __construct($config = 'rest') {
+        parent::__construct($config);
+        $this->load->model("usuarios_model", "usuarios");
+        header('Access-Control-Allow-Origin: *');
+        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
     }
 
     public function index_delete() {
@@ -47,12 +49,6 @@ class Login extends REST_Controller implements NabuControlador {
             } else {
                 $this->response([], 404);
             }
-//            if ($resutado != FALSE) {
-//                //tiene llave
-//                $this->response($resutado, 200);
-//            } else {
-//
-//            }
         }
     }
 

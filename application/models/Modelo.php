@@ -3,7 +3,7 @@
 class Modelo extends CI_Model{
 
 	public function busqueda($nombre){
-		$sql ="SELECT * FROM usuarios where usuario like '$nombre'";
+		$sql ="SELECT * FROM usuarios where user like '$nombre'";
 		$resultado = $this->db->query($sql);
 		if($resultado->num_rows > 0){
 			//Trajo
