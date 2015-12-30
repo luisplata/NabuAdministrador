@@ -31,6 +31,7 @@ class Validaciones {
         } else {
             return FALSE;
         }
-    }
+    } 
+    
 
 }

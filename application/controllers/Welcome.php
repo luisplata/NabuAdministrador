@@ -27,7 +27,7 @@ class Welcome extends CI_Controller {
 		$this->load->model("Modelo");
 		$datos["negro"] = "Hola negro! :D";
 		$datos["pery"]="hola pery";
-		$datos["saludo"] = $this->Modelo->busqueda($nombre);
+		//$datos["saludo"] = $this->Modelo->busqueda($nombre);
 		echo json_encode($datos);
 	}
 	public function ajax(){

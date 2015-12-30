@@ -11,52 +11,62 @@
  *
  * @author Luiis Plata
  */
-require APPPATH . '/libraries/REST_Controller.php';
-require APPPATH . '/interfaces/NabuControlador.php';
-
-class Login extends REST_Controller implements NabuControlador {
+class Login extends CI_Controller {
 
     //put your code here
 
-    public function __construct($config = 'rest') {
-        parent::__construct($config);
+    public function __construct() {
+        parent::__construct();
         $this->load->model("usuarios_model", "usuarios");
         header('Access-Control-Allow-Origin: *');
-        header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE");
     }
 
     public function index_delete() {
         
     }
 
-    public function index_get() {
-        $llave = $this->get("llave");
+    public function get2() {
+        $this->output->set_status_header('401', "Prueba, asi que note asustes ;)");
+        echo json_encode($this->input->get("llave"));
+    }
+
+    public function get() {
+        $llave = $this->input->get("llave");
         $llaves = $this->validaciones->validarLlave($llave);
         //print_r($llaves);
         if ($llaves) {
             //hay llave
-            //y no se hace el login
-            $this->response($llaves, 200);
+            //y no se hace el login            
+            $this->output->set_status_header('200');
+            //colocarlo en un array?
+            echo json_encode($llaves);
+            //return;
         } else {
             //si no tiene llave se hace el login
-            $usuario = $this->get("user");
-            $pass = $this->get("pass");
+            $usuario = $this->input->get("user");
+            $pass = $this->input->get("pass");
 //            print_r($usuario.$pass);
             $resutado = $this->usuarios->login($usuario, sha1($pass));
 //            print_r($resutado);
             if ($resutado) {
-                $this->response($resutado, 200);
+                //$this->response($resutado, 200);
+                $this->output->set_status_header('200');
+                echo json_encode($resutado);
+                //return;
             } else {
-                $this->response([], 404);
+                //$this->response([], 404);
+                $this->output->set_status_header('404', "No Hay nada para ti :(");
+                //return;
             }
         }
+        return;
     }
 
-    public function index_post() {
+    public function post() {
         
     }
 
-    public function index_put() {
+    public function put() {
         
     }
 
